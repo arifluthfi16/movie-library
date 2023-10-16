@@ -18,7 +18,6 @@ public class MovieResource {
         this.movieDAO = movieDAO;
     }
 
-
     @GET
     public List<Movie> getAllMovies() {
         return movieDAO.getAll();

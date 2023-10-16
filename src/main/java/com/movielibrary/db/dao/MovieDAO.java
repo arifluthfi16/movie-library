@@ -1,7 +1,6 @@
 package com.movielibrary.db.dao;
 
 import com.movielibrary.api.Movie;
-import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.config.RegisterBeanMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
@@ -16,7 +15,7 @@ import java.util.List;
 public interface MovieDAO {
     @SqlUpdate("""
         INSERT INTO movies (title, release_year, genre, rating, description)
-        VALUES (:title, :releaseYear, :genre, :rating, :description)
+        VALUES (:movie.title, :movie.releaseYear, :movie.genre, :movie.rating, :movie.description)
     """)
     @Transaction
     @GetGeneratedKeys
@@ -31,8 +30,13 @@ public interface MovieDAO {
     List<Movie> getAll();
 
     @SqlUpdate("""
-        UPDATE movies 
-        SET title = :title, release_year = :releaseYear, genre = :genre, rating = :rating, description = :description 
+        UPDATE movies
+        SET
+            title = :movie.title,
+            release_year = :movie.releaseYear,
+            genre = :movie.genre,
+            rating = :movie.rating,
+            description = :movie.description
         WHERE id = :id
     """)
     @Transaction

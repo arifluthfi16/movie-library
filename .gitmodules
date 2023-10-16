@@ -1,0 +1,3 @@
+[submodule "src/main/java/com/movielibrary/db/migration"]
+	path = src/main/java/com/movielibrary/db/migration
+	url = git@github.com:arifluthfi16/movie-library-migration.git
