@@ -19,7 +19,7 @@ public interface MovieDAO {
     """)
     @Transaction
     @GetGeneratedKeys
-    int insertMovie(@BindBean Movie movie);
+    int insertMovie(@BindBean("movie") Movie movie);
 
     @SqlQuery("SELECT * FROM movies WHERE id = :id")
     Movie getMovieById(
@@ -40,7 +40,7 @@ public interface MovieDAO {
         WHERE id = :id
     """)
     @Transaction
-    int updateMovie(@Bind("id") int id, @BindBean Movie movie);
+    int updateMovie(@Bind("id") int id, @BindBean("movie") Movie movie);
 
     @SqlUpdate("DELETE FROM movies WHERE id = :id")
     @Transaction
