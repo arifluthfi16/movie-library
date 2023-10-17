@@ -1,5 +1,6 @@
 package com.movielibrary;
 
+import com.movielibrary.client.UserRPC;
 import com.movielibrary.db.dao.MovieDAO;
 import com.movielibrary.resources.MovieResource;
 import io.dropwizard.core.Application;
@@ -40,15 +41,16 @@ public class MovieLibraryServiceApplication extends Application<MovieLibraryServ
 
     @Override
     public void run(final MovieLibraryServiceConfiguration config,
-                    final Environment environment) {
+                    final Environment environment) throws Exception {
         final JdbiFactory factory = new JdbiFactory();
         final Jdbi jdbi = factory.build(environment, config.getDataSourceFactory(), "postgresql");
 
         MovieDAO movieDAO = jdbi.onDemand(MovieDAO.class);
 
         runFlyway(config.getDataSourceFactory());
+        UserRPC userRPC = new UserRPC();
 
-        environment.jersey().register(new MovieResource(movieDAO));
+        environment.jersey().register(new MovieResource(movieDAO, userRPC));
     }
 
     private void runFlyway(DataSourceFactory dataSourceFactory) {

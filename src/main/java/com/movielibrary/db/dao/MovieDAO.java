@@ -45,5 +45,16 @@ public interface MovieDAO {
     @SqlUpdate("DELETE FROM movies WHERE id = :id")
     @Transaction
     void deleteMovie(@Bind("id") int id);
+
+    @SqlQuery("""
+        SELECT *
+        FROM movies
+        WHERE LOWER(SUBSTR(title, 1, 1)) = LOWER(:firstLetter)
+        LIMIT :limit
+    """)
+    List<Movie> getMoviesByFirstLetterOfTitle(
+            @Bind("firstLetter") String firstLetter,
+            @Bind("limit") int limit
+    );
 }
 
