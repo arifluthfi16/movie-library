@@ -4,6 +4,7 @@
 /Users/arifluthfi/MovieLibrary/movie-library-service/src/main/java/com/movielibrary/client/UserRPC.java
 /Users/arifluthfi/MovieLibrary/movie-library-service/src/main/java/com/movielibrary/db/dao/MovieDAO.java
 /Users/arifluthfi/MovieLibrary/movie-library-service/src/main/java/com/movielibrary/response/ResponseWrapper.java
+/Users/arifluthfi/MovieLibrary/movie-library-service/src/main/java/com/movielibrary/dto/RabbitMQConfigurationDTO.java
 /Users/arifluthfi/MovieLibrary/movie-library-service/src/main/java/com/movielibrary/dto/CreateMovieRequestDTO.java
 /Users/arifluthfi/MovieLibrary/movie-library-service/src/main/java/com/movielibrary/MovieLibraryServiceConfiguration.java
 /Users/arifluthfi/MovieLibrary/movie-library-service/src/main/java/com/movielibrary/resources/MovieResource.java

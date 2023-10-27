@@ -22,7 +22,7 @@ flyway:
   baselineOnMigrate: true
   validateOnMigrate: true
   locations:
-    - filesystem:src/main/java/com/authservice/db/migration
+    - filesystem:src/main/java/com/movielibrary/db/migration
   baseLineVersion: 1
 server:
   applicationConnectors:

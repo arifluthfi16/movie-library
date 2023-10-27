@@ -3,6 +3,7 @@ package com.movielibrary.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.movielibrary.MovieLibraryServiceConfiguration;
 import com.movielibrary.dto.UserResponseDTO;
 import com.rabbitmq.client.*;
 
@@ -17,11 +18,13 @@ public class UserRPC {
     private final String publisherQueueName = "username_consumer_response";
     private final Channel channel;
 
-    public UserRPC() throws Exception {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
-
-        Connection connection = factory.newConnection();
+    public UserRPC(MovieLibraryServiceConfiguration config) throws Exception {
+        ConnectionFactory connectionFactory = new ConnectionFactory();
+        connectionFactory.setHost(config.getRabbitMQConfiguration().getHost());
+        connectionFactory.setPort(config.getRabbitMQConfiguration().getPort());
+        connectionFactory.setUsername(config.getRabbitMQConfiguration().getUsername());
+        connectionFactory.setPassword(config.getRabbitMQConfiguration().getPassword());
+        Connection connection = connectionFactory.newConnection();
         channel = connection.createChannel();
     }
 

@@ -3,6 +3,7 @@ package com.movielibrary;
 import com.movielibrary.client.UserRPC;
 import com.movielibrary.db.dao.MovieDAO;
 import com.movielibrary.resources.MovieResource;
+import com.rabbitmq.client.ConnectionFactory;
 import io.dropwizard.core.Application;
 import io.dropwizard.core.setup.Bootstrap;
 import io.dropwizard.core.setup.Environment;
@@ -48,16 +49,16 @@ public class MovieLibraryServiceApplication extends Application<MovieLibraryServ
         MovieDAO movieDAO = jdbi.onDemand(MovieDAO.class);
 
         runFlyway(config.getDataSourceFactory());
-        UserRPC userRPC = new UserRPC();
+        UserRPC userRPC = new UserRPC(config);
 
         environment.jersey().register(new MovieResource(movieDAO, userRPC));
     }
 
     private void runFlyway(DataSourceFactory dataSourceFactory) {
         Flyway flyway = Flyway.configure()
-                            .driver("com.microsoft.sqlserver.jdbc.SQLServerDriver")
-                            .dataSource(dataSourceFactory.getUrl(), dataSourceFactory.getUser(), dataSourceFactory.getPassword())
-                            .load();
+            .driver("com.microsoft.sqlserver.jdbc.SQLServerDriver")
+            .dataSource(dataSourceFactory.getUrl(), dataSourceFactory.getUser(), dataSourceFactory.getPassword())
+            .load();
         flyway.migrate();
     }
 }

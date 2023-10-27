@@ -1,5 +1,6 @@
 package com.movielibrary;
 
+import com.movielibrary.dto.RabbitMQConfigurationDTO;
 import io.dropwizard.core.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.db.DataSourceFactory;
@@ -21,11 +22,25 @@ public class MovieLibraryServiceConfiguration extends Configuration {
         this.database = factory;
     }
 
+    @NotNull
+    @JsonProperty("rabbitmq")
+    private RabbitMQConfigurationDTO rabbitMQConfiguration;
+
     public DataSourceFactory getDataSourceFactory() {
         return database;
     }
 
     public FlywayFactory getFlywayFactory() {
         return flywayFactory;
+    }
+
+    @JsonProperty("rabbitmq")
+    public RabbitMQConfigurationDTO getRabbitMQConfiguration() {
+        return rabbitMQConfiguration;
+    }
+
+    @JsonProperty("rabbitmq")
+    public void setRabbitMQConfiguration(RabbitMQConfigurationDTO rabbitMQConfiguration) {
+        this.rabbitMQConfiguration = rabbitMQConfiguration;
     }
 }
