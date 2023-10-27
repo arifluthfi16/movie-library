@@ -22,5 +22,5 @@ To see your applications health enter url `http://localhost:8081/healthcheck`
     <packaging>jar</packaging>  
     ```
 3. To build the service run `mvn package`
-4. To run the build `java -jar target/movie-library-service-1.0.jar`
+4. To run the build `java -jar target/movie-library-service-1.0.jar server config.yml`
 5. 
