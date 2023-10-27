@@ -21,6 +21,11 @@ To see your applications health enter url `http://localhost:8081/healthcheck`
     <version>1.0</version>
     <packaging>jar</packaging>  
     ```
-3. To build the service run `mvn package`
-4. To run the build `java -jar target/movie-library-service-1.0.jar server config.yml`
-5. 
+2. To build the service run `mvn package`
+3. To run the build `java -jar target/movie-library-service-1.0.jar server config.yml`
+
+# Running Dockerfile
+
+1. Set the target into existing build target
+2. Build the docker image `docker build -t auth-service:1.0 .`
+3. Run the dockerfile using `docker run -d -p 8080:8082 auth-service:1.0`
