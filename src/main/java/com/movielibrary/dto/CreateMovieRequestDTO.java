@@ -20,8 +20,8 @@ public class CreateMovieRequestDTO {
     @NotNull
     private String genre;
 
-    @Min(value = 1, message = "The rating must be at least 1")
-    @Max(value = 5, message = "The rating must be at most 5")
+    @Min(value = 1, message = "must be at least 1")
+    @Max(value = 5, message = "must be at most 5")
     private int rating;
 
     @Size(max = 1000)

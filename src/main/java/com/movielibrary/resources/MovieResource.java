@@ -13,6 +13,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Path("/movies")
 @Produces(MediaType.APPLICATION_JSON)
@@ -46,7 +49,21 @@ public class MovieResource {
     }
 
     @POST
-    public Movie createMovie(@Valid CreateMovieRequestDTO createMovieRequestDTO) {
+    public Response createMovie(@Valid CreateMovieRequestDTO createMovieRequestDTO) {
+        String errorString = null;
+
+        if (createMovieRequestDTO.getReleaseYear() < 1950) errorString = "Minimum release year is 1950";
+        if (
+            createMovieRequestDTO.getThumbnailUrl() != null &&
+            !Objects.equals(createMovieRequestDTO.getThumbnailUrl(), "") &&
+            !isValidImageUrl(createMovieRequestDTO.getThumbnailUrl())
+        ) {
+            errorString = "Invalid Image URL";
+        }
+
+        if (errorString != null) {
+            return new ResponseWrapper<>(Response.Status.BAD_REQUEST, errorString, null).build();
+        }
 
         Movie movie = new Movie();
 
@@ -65,13 +82,14 @@ public class MovieResource {
         responseWrapper.setMessage("Successfully created new movie");
         responseWrapper.setData(movie);
 
-        return movie;
+        return responseWrapper.build();
     }
 
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateMovie(@PathParam("id") int id, @Valid UpdateMovieRequestDTO updateRequest) {
+        String errorString = null;
         Movie existingMovie = movieDAO.getMovieById(id);
         if (existingMovie == null) {
             return new ResponseWrapper<>(Response.Status.BAD_REQUEST, "Movie not found", null).build();
@@ -81,6 +99,7 @@ public class MovieResource {
             existingMovie.setTitle(updateRequest.getTitle());
         }
         if (updateRequest.getReleaseYear() != null) {
+            if (updateRequest.getReleaseYear() < 1950) errorString = "Minimum release year is 1950";
             existingMovie.setReleaseYear(updateRequest.getReleaseYear());
         }
         if (updateRequest.getGenre() != null) {
@@ -93,7 +112,18 @@ public class MovieResource {
             existingMovie.setDescription(updateRequest.getDescription());
         }
         if (updateRequest.getThumbnailUrl() != null) {
+            if (
+                    updateRequest.getThumbnailUrl() != null &&
+                    !Objects.equals(updateRequest.getThumbnailUrl(), "") &&
+                    !isValidImageUrl(updateRequest.getThumbnailUrl())
+            ) {
+                errorString = "Invalid Image URL";
+            }
             existingMovie.setThumbnailUrl(updateRequest.getThumbnailUrl());
+        }
+
+        if (errorString != null) {
+            return new ResponseWrapper<>(Response.Status.BAD_REQUEST, errorString, null).build();
         }
 
         int updatedRows = movieDAO.updateMovie(id, existingMovie);
@@ -138,5 +168,12 @@ public class MovieResource {
         } catch (Exception e) {
             return new ResponseWrapper<>(Response.Status.OK,"Something went wrong", null).build();
         }
+    }
+
+    private static boolean isValidImageUrl(String url) {
+        String imageUrlPattern = "^(http|https)://.*\\.(jpg|jpeg|png|gif|bmp)$";
+        Pattern pattern = Pattern.compile(imageUrlPattern);
+        Matcher matcher = pattern.matcher(url);
+        return matcher.matches();
     }
 }
