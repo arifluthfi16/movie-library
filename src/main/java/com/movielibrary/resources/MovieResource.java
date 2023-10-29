@@ -55,6 +55,7 @@ public class MovieResource {
         movie.setTitle(createMovieRequestDTO.getTitle());
         movie.setRating(createMovieRequestDTO.getRating());
         movie.setReleaseYear(createMovieRequestDTO.getReleaseYear());
+        movie.setThumbnailUrl(createMovieRequestDTO.getThumbnailUrl());
 
         int movieId = movieDAO.insertMovie(movie);
 
@@ -90,6 +91,9 @@ public class MovieResource {
         }
         if (updateRequest.getDescription() != null) {
             existingMovie.setDescription(updateRequest.getDescription());
+        }
+        if (updateRequest.getThumbnailUrl() != null) {
+            existingMovie.setThumbnailUrl(updateRequest.getThumbnailUrl());
         }
 
         int updatedRows = movieDAO.updateMovie(id, existingMovie);

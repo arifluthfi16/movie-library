@@ -14,4 +14,5 @@ public class Movie {
     private String genre;
     private int rating;
     private String description;
+    private String thumbnailUrl;
 }

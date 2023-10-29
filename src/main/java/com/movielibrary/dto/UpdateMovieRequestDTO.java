@@ -23,4 +23,5 @@ public class UpdateMovieRequestDTO {
     @Size(max = 1000)
     private String description;
 
+    private String thumbnailUrl;
 }

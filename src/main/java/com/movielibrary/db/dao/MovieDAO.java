@@ -14,8 +14,8 @@ import java.util.List;
 @RegisterBeanMapper(Movie.class)
 public interface MovieDAO {
     @SqlUpdate("""
-        INSERT INTO movies (title, release_year, genre, rating, description)
-        VALUES (:movie.title, :movie.releaseYear, :movie.genre, :movie.rating, :movie.description)
+        INSERT INTO movies (title, release_year, genre, rating, description, thumbnail_url)
+        VALUES (:movie.title, :movie.releaseYear, :movie.genre, :movie.rating, :movie.description, :movie.thumbnailUrl)
     """)
     @Transaction
     @GetGeneratedKeys
@@ -30,14 +30,15 @@ public interface MovieDAO {
     List<Movie> getAll();
 
     @SqlUpdate("""
-        UPDATE movies
-        SET
-            title = :movie.title,
-            release_year = :movie.releaseYear,
-            genre = :movie.genre,
-            rating = :movie.rating,
-            description = :movie.description
-        WHERE id = :id
+    UPDATE movies
+    SET
+        title = :movie.title,
+        release_year = :movie.releaseYear,
+        genre = :movie.genre,
+        rating = :movie.rating,
+        description = :movie.description,
+        thumbnail_url = :movie.thumbnailUrl
+    WHERE id = :id
     """)
     @Transaction
     int updateMovie(@Bind("id") int id, @BindBean("movie") Movie movie);
